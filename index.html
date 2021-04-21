@@ -1,41 +1,42 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-	<!--<link rel="stylesheet" href="style.css">-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <!--<link rel="stylesheet" href="style.css">-->
 
 
-	<link href="https://unpkg.com/material-components-web@10.0.0/dist/material-components-web.min.css" rel="stylesheet">
-	<script src="https://unpkg.com/material-components-web@10.0.0/dist/material-components-web.min.js">
+    <link href="https://unpkg.com/material-components-web@10.0.0/dist/material-components-web.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/material-components-web@10.0.0/dist/material-components-web.min.js">
 
-	</script>
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    </script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-	<!-- This is to hide the template for the search section CARDS -->
-	<style>
-		.template {
-			display: none;
-		}
-	</style>
+    <!-- This is to hide the template for the search section CARDS -->
+    <style>
+        .template {
+            display: none;
+        }
+    </style>
 
-	<!-- for the screnes` -->
-	<style>
-		.screen {
-			display: none;
-		}
+    <!-- for the screnes` -->
+    <style>
+        .screen {
+            display: none;
+        }
 
-		body {
-			margin: 0;
-		}
-	</style>
-	<!-- Bootstrap CSS -->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-	 crossorigin="anonymous">
+        body {
+            margin: 0;
+        }
+    </style>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-	<!-- this is for the web manifest -->
+    <!-- this is for the web manifest -->
     <!--
 	<script>
 		if ('serviceWorker' in navigator) {
@@ -58,57 +59,142 @@
 </head>
 
 <body>
+    <!-- This part controls the top nav bar-->
     <header class="mdc-top-app-bar mdc-top-app-bar--fixed ink-color($3399FF)">
         <div class="mdc-top-app-bar__row">
-          <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-            <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button" aria-label="Open navigation menu">menu</button>
-            <span class="mdc-top-app-bar__title">Traffic Light Locations</span>
-          </section>
-          <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-            <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Options">more_vert</button>
-          </section>
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+                <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button"
+                    aria-label="navMenu">menu</button>
+                <span class="mdc-top-app-bar__title">Traffic Light Locations</span>
+            </section>
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+                <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
+                    aria-label="Options">more_vert</button>
+            </section>
         </div>
-      </header>
+    </header>
 
-      <aside class="mdc-drawer mdc-drawer--modal">
+    <aside class="mdc-drawer mdc-drawer--modal">
         <div class="mdc-drawer__content">
-          <nav class="mdc-list">
-            <a class="mdc-list-item mdc-list-item--activated" href="#Screen1" aria-current="page" tabindex="0" aria-selected="true">
-              <span class="mdc-list-item__ripple"></span>
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-              <span class="mdc-list-item__text">Home page</span>
-              
-            </a>
-            <a class="mdc-list-item" href="#Screen2" tabindex="-1" aria-selected="false">
-              <span class="mdc-list-item__ripple"></span>
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-              <span class="mdc-list-item__text">Locations</span>
-            </a>
-            <a class="mdc-list-item" href="#Screen3" tabindex="-1" aria-selected="false">
-              <span class="mdc-list-item__ripple"></span>
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-              <span class="mdc-list-item__text">Weather and Alerts</span>
-            </a>
-            <a class="mdc-list-item" href="#screen4" tabindex="-1" aria-selected="false">
-              <span class="mdc-list-item__ripple"></span>
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-              <span class="mdc-list-item__text">About Me</span>
-            </a>
-          </nav>
+            <nav class="mdc-list">
+                <!--screen one or home page is here-->
+                <a class="mdc-list-item mdc-list-item--activated" href="#screen1" aria-current="page" tabindex="0"
+                    aria-selected="true">
+                    <span class="mdc-list-item__ripple"></span>
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
+                    <span class="mdc-list-item__text">Home page</span>
+
+                </a>
+                <!--second screen-->
+                <a class="mdc-list-item" href="#screen2" tabindex="-1" aria-selected="false">
+                    <span class="mdc-list-item__ripple"></span>
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
+                    <span class="mdc-list-item__text">Locations</span>
+                </a>
+                <!--third screen-->
+                <a class="mdc-list-item" href="#screen3" tabindex="-1" aria-selected="false">
+                    <span class="mdc-list-item__ripple"></span>
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
+                    <span class="mdc-list-item__text">Weather and Alerts</span>
+                </a>
+                <!--fourth screen-->
+                <a class="mdc-list-item" href="#screen4" tabindex="-1" aria-selected="false">
+                    <span class="mdc-list-item__ripple"></span>
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
+                    <span class="mdc-list-item__text">About Me</span>
+                </a>
+            </nav>
         </div>
-      </aside>
+    </aside>
 
 
-    <div id="number2" class="screen">
+    <div id="screen1" class="screen">
         <center>
-    <div class="card" style="width: 18rem;">
-    <div class="card-body">
-    
-      <h5 class="card-title">Instructions</h5>
-      <p class="card-text">You can get around the city without any issues and this app shows where you have been, as long as you have the app working, that way you are able to track back your steps and be able to get to the destination where you came from in the begging. This is done by going to the Location tab and pressing on the button enable location. Once you have done that you may go to the map tab to see your location be placed in a map. If you feel unsafe you can go to a local police station to get help. These are indicated as blue dots, and you can tell what neighborhoods to avoid if there are a lot of green dots in a single location. This represents the crimes that were recorded to take in that place. Safe Travels!</p>
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h1 class="card-title">Instructions</h1>
+                    <p class="card-text">Information about how the app works, we will fill this up with lots of infor
+                        but right now i just need to fill it in with any typpe of wrtiing so thats what im doen doesnt
+                        mater if its misppedled itll be deleted ar one point or another anywards so oh whale hello</p>
+                </div>
+            </div>
+        </center>
     </div>
+
+    <div id="screen2" class="screen">
+        <center>
+            <!-- google map here-->
+            <div id="googleMap" style="width:100%; height: 400px;"></div>
+            <div id="currentLocation"></div>
+        </center>
     </div>
-    </center>
+
+    <div id="screen3" class="screen">
+        <center>
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h3 class="card-title">Weather and alert something</h3>
+                    <p class="card-text">Will be adding the map in this area</p>
+                </div>
+            </div>
+        </center>
+    </div>
+
+    <div id="screen4" class="screen">
+        <center>
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h4 class="card-title">About me</h4>
+                    <p class="card-text">I guess this is where i talk about myself \_(-_-)_/</p>
+                </div>
+            </div>
+        </center>
+    </div>
+
+
+    <script>
+        // displays the main home page as soon as the app loads
+        window.addEventListener("load", (event) => {
+            document.querySelector("#screen1").style.display = 'block';
+        });
+
+        const screenList = document.querySelector(".mdc-drawer .mdc-list");
+        const topAppBarElement = document.querySelector('.mdc-top-app-bar');
+        const drawer = mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
+
+        screenList.addEventListener("click", (event) => {
+            drawer.open = false;
+        });
+
+        document.querySelector("header button.mdc-top-app-bar__navigation-icon").addEventListener("click", (event) => {
+            drawer.open = true;
+        });
+
+        document.body.addEventListener('MDCDrawer:closed', (event) => {
+            mainContentEl.querySelector('input, button').focus();
+        });
+
+        // changes screen to desired one off of the menu
+        document.querySelectorAll('.mdc-list-item').forEach((element) => {
+            element.addEventListener('click', (event) => {
+
+                hidescreens();
+                let href = event.target.getAttribute("href");
+                //console.log(href);
+                console.log(event);
+                document.querySelector(href).style.display = "block";
+
+            });
+        });
+
+        let hidescreens = () => {
+            document.querySelectorAll(".screen").forEach((element) => {
+                element.style.display = "none";
+            });
+        }
+
+
+    </script>
 
 </body>
 
