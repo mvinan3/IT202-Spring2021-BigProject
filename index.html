@@ -60,11 +60,11 @@
 
 <body>
     <!-- This part controls the top nav bar-->
-    <header class="mdc-top-app-bar mdc-top-app-bar--fixed ink-color($3399FF)">
+    <header class="mdc-top-app-bar mdc-top-app-bar--fixed)">
         <div class="mdc-top-app-bar__row">
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
                 <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button"
-                    aria-label="navMenu">menu</button>
+                    aria-label="Open navigation menu">menu</button>
                 <span class="mdc-top-app-bar__title">Traffic Light Locations</span>
             </section>
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
@@ -78,35 +78,40 @@
         <div class="mdc-drawer__content">
             <nav class="mdc-list">
                 <!--screen one or home page is here-->
-                <a class="mdc-list-item mdc-list-item--activated" href="#screen1" aria-current="page" tabindex="0"
-                    aria-selected="true">
+                <a class="mdc-list-item mdc-list-item--activated" href="#screen1" aria-current="page" tabindex="0">
                     <span class="mdc-list-item__ripple"></span>
-                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>
                     <span class="mdc-list-item__text">Home page</span>
-
                 </a>
                 <!--second screen-->
-                <a class="mdc-list-item" href="#screen2" tabindex="-1" aria-selected="false">
+                <a class="mdc-list-item" href="#screen2">
                     <span class="mdc-list-item__ripple"></span>
-                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">room</i>
                     <span class="mdc-list-item__text">Locations</span>
                 </a>
                 <!--third screen-->
-                <a class="mdc-list-item" href="#screen3" tabindex="-1" aria-selected="false">
+                <a class="mdc-list-item" href="#screen3">
                     <span class="mdc-list-item__ripple"></span>
-                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">feedback</i>
                     <span class="mdc-list-item__text">Weather and Alerts</span>
                 </a>
                 <!--fourth screen-->
-                <a class="mdc-list-item" href="#screen4" tabindex="-1" aria-selected="false">
+                <a class="mdc-list-item" href="#screen4">
                     <span class="mdc-list-item__ripple"></span>
-                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">description</i>
                     <span class="mdc-list-item__text">About Me</span>
                 </a>
             </nav>
         </div>
     </aside>
 
+    <div class="mdc-drawer-scrim"></div>
+
+    <main>
+        <main class="mdc-top-app-bar--fixed-adjust">
+            <!--something gonna have to go here-->
+          </main>
+    </main>
 
     <div id="screen1" class="screen">
         <center>
@@ -159,8 +164,9 @@
         });
 
         const screenList = document.querySelector(".mdc-drawer .mdc-list");
-        const topAppBarElement = document.querySelector('.mdc-top-app-bar');
+        const topNav = document.querySelector('.mdc-top-app-bar');
         const drawer = mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
+        const mainContentEl = document.querySelector('main');
 
         screenList.addEventListener("click", (event) => {
             drawer.open = false;
@@ -171,7 +177,7 @@
         });
 
         document.body.addEventListener('MDCDrawer:closed', (event) => {
-            mainContentEl.querySelector('input, button').focus();
+           // mainContentEl.querySelector('input, button').focus();
         });
 
         // changes screen to desired one off of the menu
@@ -181,7 +187,7 @@
                 hidescreens();
                 let href = event.target.getAttribute("href");
                 //console.log(href);
-                console.log(event);
+                //console.log(event);
                 document.querySelector(href).style.display = "block";
 
             });
