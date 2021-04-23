@@ -110,7 +110,7 @@
     <main>
         <main class="mdc-top-app-bar--fixed-adjust">
             <!--something gonna have to go here-->
-          </main>
+        </main>
     </main>
 
     <div id="screen1" class="screen">
@@ -129,7 +129,7 @@
     <div id="screen2" class="screen">
         <center>
             <!-- google map here-->
-            <div id="googleMap" style="width:100%; height: 400px;"></div>
+            <div id="map" style="width:100%; height: 400px;"></div>
             <div id="currentLocation"></div>
         </center>
     </div>
@@ -177,7 +177,7 @@
         });
 
         document.body.addEventListener('MDCDrawer:closed', (event) => {
-           // mainContentEl.querySelector('input, button').focus();
+            // mainContentEl.querySelector('input, button').focus();
         });
 
         // changes screen to desired one off of the menu
@@ -198,9 +198,96 @@
                 element.style.display = "none";
             });
         }
+    </script>
 
+    <!--This one controls the map portion of the project-->
+    <script>
+        let map, infoWindow;
+        let currentPos = {};
+        let cameraArray = [];
+
+        function initMap() {
+            const uic = { lat: 41.8696, lng: -87.6496 };
+            const pos = {};
+            map = new google.maps.Map(document.querySelector("#map"), {
+                center: uic,
+                zoom: 15,
+            });
+
+            infoWindow = new google.maps.InfoWindow("#map");
+            //gonna attempt to make a button that will allow you to show cameras near you at any time
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude,
+                        },
+                            currentPos = {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude,
+                            };
+                        cameraArray = getCameraLocations(currentPos);
+                        console.log(typeof(cameraArray));
+                        map.setCenter(pos);
+                        let marker = new google.maps.Marker({
+                            position: pos,
+                            map: map,
+                        });
+                    },
+                    () => {
+                        handleLocationError(true, infoWindow, map.getCenter());
+                    }
+                );
+            }
+            else {
+                //browser doesnt support geolocation
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+        }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(
+                browserHasGeolocation
+                    ? "Error: The Geolocation service failed."
+                    : "Error: Your Browser doesn't support geolocation."
+            );
+            infoWindow.open(map);
+        }
+        //fetches and returns camera locations
+        function getCameraLocations(a) {
+
+            let lc = [];
+            let endpoint1 = "https://data.cityofchicago.org/resource/4i42-qv3h.json";
+
+            let url = endpoint1 + "?$where=within_circle(location, " + a.lat + ", " + a.lng + ", 1000)";
+
+            fetch(url)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    for (let item of data) {
+                        const lC = {
+                            lat: item["location"]["latitude"],
+                            lng: item["location"]["longitude"],
+                        };
+                        lc.push(lC);
+                    }
+                });
+                console.log(typeof(lc));
+            return lc;
+        };
 
     </script>
+
+
+    <!--Async script executes immediately and must be after any DOM elements used in callback-->
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB9QhM00gFhskAlKweSMhhl0hw37-XKY3k&callback=initMap&libraries=&v=weekly"
+        async></script>
 
 </body>
 
