@@ -38,6 +38,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+    <link rel="manifest" href="manifest.json">
     <script>
         //var db = new Dexie("app_db");
         //db.version(1).STORES({
@@ -53,7 +54,7 @@
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
                 <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button"
                     aria-label="Open navigation menu">menu</button>
-                <span class="mdc-top-app-bar__title">Traffic Light Locations</span>
+                <span class="mdc-top-app-bar__title">Traffic Camera Locations</span>
             </section>
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
                 <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
@@ -119,14 +120,17 @@
             <!-- google map here-->
             <div id="map" style="width:100%; height: 400px;"></div>
             <div id="getLocation">
-                <button type="button">get location</button>
+                <button type="button">Current Location</button>
+            </div>
+            <div id="legend">
+                <h1></h1>
             </div>
         </center>
     </div>
 
     <div id="screen3" class="screen">
         <center>
-            <div class="card" style="width: 18rem;">
+            <div class="card column" style="width: 18rem;">
                 <div class="mdc-card">
                     <div class="mdc-card__primary-action mdc-typography--headline5">
                         <center>
@@ -155,6 +159,8 @@
                 <div class="card-body">
                     <h4 class="card-title">About me</h4>
                     <p class="card-text">I guess this is where i talk about myself \_(-_-)_/</p>
+                </div>
+                <div class="card-body">
                 </div>
             </div>
         </center>
@@ -207,6 +213,7 @@
     <script>
         let map, infoWindow;
         let gL = document.querySelector("#getLocation");
+        let lg = document.querySelector("#legend");
 
         function initMap() {
             const chi = { lat: 41.8781, lng: -87.6298 };
@@ -215,6 +222,7 @@
                 center: chi,
                 zoom: 15,
             });
+            let infowindow = new google.maps.InfoWindow("#map");
 
             //gets geolocation
             gL.addEventListener("click", () => {
@@ -319,6 +327,7 @@
                     }
                 })
         };
+
     </script>
 
     <!--Controls the weather page and alerts-->
