@@ -14,6 +14,8 @@
 
     </script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- Include Dexie -->
+    <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
 
     <!-- This is to hide the template for the search section CARDS -->
     <style>
@@ -36,26 +38,12 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <!-- this is for the web manifest -->
-    <!--
-	<script>
-		if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/sw.js').then(function(registration) {
-      // Registration was successful
-      console.log('ServiceWorker registration successful with scope: ', registration.scope);
-    }, function(err) {
-      // registration failed :(
-      console.log('ServiceWorker registration failed: ', err);
-    });
-  });
-}
-	</script>
-	<script>
-		self.addEventListener('install', function(event) {
-  // Perform install steps
-});
-	</script> -->
+    <script>
+        var db = new Dexie("app_db");
+        db.version(1).STORES({
+            latlng = "names,x,y"
+        });
+    </script>
 </head>
 
 <body>
@@ -137,12 +125,26 @@
     <div id="screen3" class="screen">
         <center>
             <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h3 class="card-title">Weather and alert something</h3>
-                    <p class="card-text">Will be adding the map in this area</p>
+                <div class="mdc-card">
+                    <div class="mdc-card__primary-action mdc-typography--headline5">
+                        <center>
+                            <div class="mdc-card mdc-card--outlined">
+                                <h1 class="mdc-typography--headline3">Current weather</h1>
+                            </div>
+                            <p class="mdc-typography--headline4">City:</p>
+                            <p class="name mdc-typography--headline6"></p>
+                            <p class="mdc-typography--headline4">Temperature in Farenheit:</p>
+                            <p class="temp mdc-typography--headline6"></p>
+                            <p class="mdc-typography--headline4">Feels like:</p>
+                            <p class="feels_like mdc-typography--headline6"></p>
+                            <p class="mdc-typography--headline4">Description:</p>
+                            <p class="description mdc-typography--headline6"></p>
+                        </center>
+                    </div>
                 </div>
             </div>
         </center>
+
     </div>
 
     <div id="screen4" class="screen">
@@ -156,9 +158,8 @@
         </center>
     </div>
 
-
+    <!--displays the main home page as soon as the app loads and controls switch between screens-->
     <script>
-        // displays the main home page as soon as the app loads
         window.addEventListener("load", (event) => {
             document.querySelector("#screen1").style.display = 'block';
         });
@@ -180,7 +181,7 @@
             // mainContentEl.querySelector('input, button').focus();
         });
 
-        // changes screen to desired one off of the menu
+        // changes screen to desired one from the menu
         document.querySelectorAll('.mdc-list-item').forEach((element) => {
             element.addEventListener('click', (event) => {
 
@@ -200,41 +201,28 @@
         }
     </script>
 
-    <!--This one controls the map portion of the project-->
+    <!--controls location screen-->
     <script>
         let map, infoWindow;
-        let currentPos = {};
-        let cameraArray = [];
 
         function initMap() {
-            const uic = { lat: 41.8696, lng: -87.6496 };
+            const chi = { lat: 41.8781, lng: -87.6298 };
             const pos = {};
             map = new google.maps.Map(document.querySelector("#map"), {
-                center: uic,
+                center: chi,
                 zoom: 15,
             });
 
-            infoWindow = new google.maps.InfoWindow("#map");
-            //gonna attempt to make a button that will allow you to show cameras near you at any time
-
+            //gets geolocation
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
                         const pos = {
                             lat: position.coords.latitude,
                             lng: position.coords.longitude,
-                        },
-                            currentPos = {
-                                lat: position.coords.latitude,
-                                lng: position.coords.longitude,
-                            };
-                        cameraArray = getCameraLocations(currentPos);
-                        console.log(typeof(cameraArray));
+                        };
+                        getCameraLocations(pos);
                         map.setCenter(pos);
-                        let marker = new google.maps.Marker({
-                            position: pos,
-                            map: map,
-                        });
                     },
                     () => {
                         handleLocationError(true, infoWindow, map.getCenter());
@@ -258,11 +246,13 @@
         }
         //fetches and returns camera locations
         function getCameraLocations(a) {
-
-            let lc = [];
             let endpoint1 = "https://data.cityofchicago.org/resource/4i42-qv3h.json";
+            let endpoint2 = "https://data.cityofchicago.org/resource/thvf-6diy.json";
 
             let url = endpoint1 + "?$where=within_circle(location, " + a.lat + ", " + a.lng + ", 1000)";
+            let url2 = endpoint2 + "?$where=within_circle(location, " + a.lat + ", " + a.lng + ", 1000)";
+
+            var iconBase = "http://maps.google.com/mapfiles/kml/paddle/";
 
             fetch(url)
                 .then((response) => {
@@ -270,17 +260,82 @@
                 })
                 .then((data) => {
                     for (let item of data) {
-                        const lC = {
-                            lat: item["location"]["latitude"],
-                            lng: item["location"]["longitude"],
+                        let approach = item["first_approach"];
+                        let secondApproach = item["second_approach"];
+                        const sC = {
+                            lat: parseFloat(item["location"]["latitude"]),
+                            lng: parseFloat(item["location"]["longitude"])
                         };
-                        lc.push(lC);
+                        const infowindow = new google.maps.InfoWindow({
+                            content: "Speed Camera pointing towards " + approach + " and " + secondApproach + ".",
+                        });
+                        let marker = new google.maps.Marker({
+                            position: sC,
+                            icon: iconBase + "ylw-circle-lv.png",
+                            map: map,
+                            title: "Speed Camera"
+                        });
+                        marker.addListener("click", () => {
+                            infowindow.open(map, marker);
+                        });
                     }
                 });
-                console.log(typeof(lc));
-            return lc;
-        };
 
+            fetch(url2)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    for (let item of data) {
+                        let approach = item["first_approach"];
+                        let secondApproach = item["second_approach"];
+                        const rC = {
+                            lat: parseFloat(item["location"]["latitude"]),
+                            lng: parseFloat(item["location"]["longitude"])
+                        };
+                        const infowindow = new google.maps.InfoWindow({
+                            content: "Red-light camera pointing towards " + approach + " and " + secondApproach + ".",
+                        });
+                        let marker = new google.maps.Marker({
+                            position: rC,
+                            map: map,
+                            icon: iconBase + "red-circle-lv.png",
+                            title: "Red Light Camera",
+                        });
+                        marker.addListener("click", () => {
+                            infowindow.open(map, marker);
+                        });
+                    }
+                })
+        };
+    </script>
+
+    <!--Controls the weather page and alerts-->
+    <script>
+
+        var names = document.querySelector(".name");
+        let temp = document.querySelector(".temp");
+        let feelsLike = document.querySelector(".feels_like");
+        let desc = document.querySelector(".description");
+
+        let url3 = "https://api.openweathermap.org/data/2.5/weather?q=Chicago&appid=5a159f09f5fb51cb605939e29e1843f0"
+
+        fetch(url3)
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                let nameVal = data["name"];
+                let tempVal = data["main"]["temp"];
+                let feelsVal = data["main"]["feels_like"];
+                let descVal = data["weather"][0]["description"];
+
+                names.innerHTML = nameVal;
+                temp.innerHTML = Math.round((tempVal) - 273.15) * (9 / 5) + (32) + ("F");;
+                feelsLike.innerHTML = Math.round((feelsVal) - 273.15) * (9 / 5) + (32) + ("F");
+                desc.innerHTML = descVal;
+
+            });
     </script>
 
 
