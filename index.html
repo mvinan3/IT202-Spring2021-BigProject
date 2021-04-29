@@ -34,6 +34,17 @@
             margin: 0;
         }
     </style>
+
+    <!--For the legend-->
+    <style>
+        #legend {
+            font-family: Arial, sans-serif;
+            background: #fff;
+            padding: 10px;
+            margin: 10px;
+            border: 3px solid #000;
+        }
+    </style>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -107,9 +118,10 @@
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
                     <h1 class="card-title">Instructions</h1>
-                    <p class="card-text">Information about how the app works, we will fill this up with lots of infor
-                        but right now i just need to fill it in with any typpe of wrtiing so thats what im doen doesnt
-                        mater if its misppedled itll be deleted ar one point or another anywards so oh whale hello</p>
+                    <p class="card-text">If you're like me and like going fast, not having to worry about remembering
+                        where those pesky speed cameras and red light cameras are, then you are at the right place. Just
+                        keep the app open as you drive and the app will notify you each time a red-light or speeding
+                        camera is coming up. You can also check the weather on the third screen.</p>
                 </div>
             </div>
         </center>
@@ -123,7 +135,7 @@
                 <button type="button">Current Location</button>
             </div>
             <div id="legend">
-                <h1></h1>
+                <h3>Legend</h3>
             </div>
         </center>
     </div>
@@ -212,8 +224,9 @@
     <!--controls location screen-->
     <script>
         let map, infoWindow;
+        let speedCamera = [];
+        let redCamera = [];
         let gL = document.querySelector("#getLocation");
-        let lg = document.querySelector("#legend");
 
         function initMap() {
             const chi = { lat: 41.8781, lng: -87.6298 };
@@ -242,16 +255,25 @@
                             })
                         },
                         () => {
-                            handleLocationError(true, infoWindow, map.getCenter());
+                            handleLocationError(true, infoWindow, pos);
                         }
                     );
                 }
                 else {
                     //browser doesnt support geolocation
-                    handleLocationError(false, infoWindow, map.getCenter());
+                    handleLocationError(false, infoWindow, pos);
                 }
             })
-
+            var legend = document.querySelector("#legend");
+            var div = document.createElement('div');
+            var div1 = document.createElement('div');
+            var div2 = document.createElement('div');
+            div.innerHTML = '<img src="http://maps.google.com/mapfiles/kml/pal4/icon57.png">' + 'your current location';
+            div1.innerHTML = '<img src="http://maps.google.com/mapfiles/kml/paddle/ylw-circle-lv.png">' + '   speed camera';
+            div2.innerHTML = '<img src="http://maps.google.com/mapfiles/kml/paddle/red-circle-lv.png">' + '   red light camera';
+            legend.appendChild(div);
+            legend.appendChild(div1);
+            legend.appendChild(div2);
         }
 
         function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -297,6 +319,7 @@
                         marker.addListener("click", () => {
                             infowindow.open(map, marker);
                         });
+                        speedCamera.push(sC);
                     }
                 });
 
@@ -324,6 +347,7 @@
                         marker.addListener("click", () => {
                             infowindow.open(map, marker);
                         });
+                        redCamera.push(rC);
                     }
                 })
         };
