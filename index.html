@@ -50,12 +50,7 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <link rel="manifest" href="manifest.json">
-    <script>
-        //var db = new Dexie("app_db");
-        //db.version(1).STORES({
-        //    latlng = "names,x,y"
-        //});
-    </script>
+    
 </head>
 
 <body>
@@ -66,10 +61,6 @@
                 <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button"
                     aria-label="Open navigation menu">menu</button>
                 <span class="mdc-top-app-bar__title">Traffic Camera Locations</span>
-            </section>
-            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-                <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
-                    aria-label="Options">more_vert</button>
             </section>
         </div>
     </header>
@@ -117,7 +108,7 @@
         <center>
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
-                    <h1 class="card-title">Instructions</h1>
+                    <h1 class="card-title">Welcome!</h1>
                     <p class="card-text">If you're like me and like going fast, not having to worry about remembering
                         where those pesky speed cameras and red light cameras are, then you are at the right place. Just
                         keep the app open as you drive and the app will notify you each time a red-light or speeding
@@ -167,13 +158,11 @@
 
     <div id="screen4" class="screen">
         <center>
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h4 class="card-title">About me</h4>
-                    <p class="card-text">I guess this is where i talk about myself \_(-_-)_/</p>
-                </div>
-                <div class="card-body">
-                </div>
+            <div>
+            <h5 class="mdc-typography--headline4">Goal</h5>
+            <p class="card-text mdc-typography--subtitle2">For this project, I built a four-screen application that informs the user of any red-light cameras and speeding cameras within a mile radius. User's can also check the weather for the day as long as they are in Chicago.</p>
+            <h5 class="mdc-typography--headline4">Marco Vinansaca</h5>    
+            <p class="mdc-typography--subtitle2">Current senior at the University of Chicago, majoring in MCS.</p>
             </div>
         </center>
     </div>
@@ -290,8 +279,8 @@
             let endpoint1 = "https://data.cityofchicago.org/resource/4i42-qv3h.json";
             let endpoint2 = "https://data.cityofchicago.org/resource/thvf-6diy.json";
 
-            let url = endpoint1 + "?$where=within_circle(location, " + a.lat + ", " + a.lng + ", 1000)";
-            let url2 = endpoint2 + "?$where=within_circle(location, " + a.lat + ", " + a.lng + ", 1000)";
+            let url = endpoint1 + "?$where=within_circle(location, " + a.lat + ", " + a.lng + ", 1609.34)";
+            let url2 = endpoint2 + "?$where=within_circle(location, " + a.lat + ", " + a.lng + ", 1609.34)";
 
             var iconBase = "http://maps.google.com/mapfiles/kml/paddle/";
 
@@ -350,11 +339,12 @@
                         redCamera.push(rC);
                     }
                 })
+            window.alert("Click on each marker to show which way the camera is facing! If it says 'undefined', then it only points in the first direction.");
         };
 
     </script>
 
-    <!--Controls the weather page and alerts-->
+    <!--Controls the weather page-->
     <script>
 
         let names = document.querySelector(".name");
